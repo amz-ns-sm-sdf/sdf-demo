@@ -21,11 +21,23 @@ jobs:
         with:
           node-version: '14'
 
+      - name: Debug - Node.js version
+        run: node --version
+
+      - name: Debug - NPM version
+        run: npm --version
+
       - name: Install SuiteCloud CLI
-        run: npm install -g --acceptSuiteCloudSDKLicense @oracle/suitecloud-cli
+        run: npm install -g @oracle/suitecloud-cli
+
+      - name: Debug - SuiteCloud CLI version
+        run: suitecloud --version
 
       - name: Authenticate with NetSuite
-        run: com.netsuite.testsdf/src suitecloud account:savetoken --account TD2938052  --authid mfgfund-prod --tokenid af36a4f664ea2c705e5abf97497d1c29fb482a2b3242aafb7c32e3bd7d1ff607  --tokensecret bc977fd8bf2e35eaa89dfa1cb93a3eecd997114816793f130046017f8bfcb195
+        env:
+          NETSUITE_ACCOUNT_ID: ${{ secrets.NETSUITE_ACCOUNT_ID }}
+          NETSUITE_AUTH_ID: ${{ secrets.NETSUITE_AUTH_ID }}
+        run: suitecloud account:login --account $NETSUITE_ACCOUNT_ID --authid $NETSUITE_AUTH_ID
 
       - name: Deploy to NetSuite
         run: suitecloud project:deploy
