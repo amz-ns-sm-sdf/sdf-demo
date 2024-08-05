@@ -1,47 +1,15 @@
-name: Deploy to NetSuite
-
+name: Deploying to QA
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
+  build:
+    name: Build and deploy
+    runs-on: 
+container:
+  image: vickcam/suitecloud-cli-node:1.0
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-
-      - name: Install Oracle JDK 17
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget
-          wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.deb
-          sudo apt install -y ./jdk-17_linux-x64_bin.deb
-          rm ./jdk-17_linux-x64_bin.deb
-          
-
-      
-
-      - name: Install SuiteCloud CLI
-        run: npm install -g --acceptSuiteCloudSDKLicense @oracle/suitecloud-cli
-
-      - name: Authenticate with NetSuite
-        env:
-          NETSUITE_ACCOUNT_ID: ${{ secrets.NETSUITE_ACCOUNT_ID }}
-          NETSUITE_AUTH_ID: ${{ secrets.NETSUITE_AUTH_ID }}
-          NETSUITE_TOKEN_ID: ${{ secrets.NETSUITE_TOKEN_ID }}
-          NETSUITE_TOKEN_SECRET: ${{ secrets.NETSUITE_TOKEN_SECRET }}
-        run: suitecloud account:savetoken --account $NETSUITE_ACCOUNT_ID --authid $NETSUITE_AUTH_ID --tokenid $NETSUITE_TOKEN_ID --tokensecret $NETSUITE_TOKEN_SECRET
-
-      - name: Deploy to NetSuite
-        run: suitecloud project:deploy
+      - run: suitecloud account:ci --savetoken --account $ {{ secrets.account_id }} --authid ${{ secrets.auth_id }} --tokenid ${{ secrets.token_id }} --tokensecret ${{ secrets.token_secret }}
+      - run: suitecloud project:validate
+      - run: suitecloud project:deploy
