@@ -1,31 +1,68 @@
-name: CI/CD Pipeline
+name: 'NetSuite:SDF'
+description: 'Deploy NetSuite Project'
+inputs:
+  account:  # id of input
+    description: 'Your NetSuite Account Id'
+    required: true
+    default: ''
+  token:  # id of input
+    description: 'Token ID for authentication'
+    required: true
+    default: ''
+  secret:  # id of input
+    description: 'Token Secret for authentication'
+    required: true
+    default: ''
+  title:  # id of input
+    description: 'Connection Name'
+    required: false
+    default: "NS-Auth-$(echo $RANDOM)"
+  action:  # id of input
+    description: 'Action (deploy, validate)'
+    required: false
+    default: ""
+outputs:
+  random-number:
+    description: "Random number"
+    value: ${{ steps.random-number-generator.outputs.random-id }}
+runs:
+  using: "composite"
+  steps:
+    - id: begin-echo
+      run: echo Setting up NS \# ${{ inputs.account}}.
+      shell: bash
+    - id: random-number-generator
+      run: echo "::set-output name=random-id::$(echo $RANDOM)"
+      shell: bash
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    - name: SuiteCloud API Install
+      run: npm install -g @oracle/suitecloud-cli
+      shell: bash
+    - id: after-sdf-install
+      run: echo '### SDF installed'.
+      shell: bash
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+    - name: Install Expect
+      run: sudo apt-get install -y expect tcl-expect
+      shell: bash
+    - id: after-expect-install
+      run: echo '### Expect installed'.
+      shell: bash
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - run: expect /home/runner/work/sdf-demo/sdf-demo/account-setup.exp TD2938052  af36a4f664ea2c705e5abf97497d1c29fb482a2b3242aafb7c32e3bd7d1ff607 bc977fd8bf2e35eaa89dfa1cb93a3eecd997114816793f130046017f8bfcb195 mfgfund-prod
+      shell: bash
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+    # - name: Setup Account
+    #   run: suitecloud account:ci --savetoken --account ${{ inputs.account }} --authid ${{ inputs.title }} --tokenid ${{ inputs.token }} --tokensecret ${{ inputs.secret }}
+    #   shell: bash
 
-      - name: Install SuiteCloud CLI
-        run: npm install -g --acceptSuiteCloudSDKLicense @oracle/suitecloud-cli
+    # - run: suitecloud project:validate
+    #   shell: bash
+    - run:  if [ ${{ inputs.action}} == 'validate' ]; then suitecloud project:validate; echo validated;  fi
+      shell: bash
 
-      - name: Authenticate with NetSuite
-        run: suitecloud account:savetoken --account TD2938052 --authid mfgfund-prod  --tokenid af36a4f664ea2c705e5abf97497d1c29fb482a2b3242aafb7c32e3bd7d1ff607 --tokensecret bc977fd8bf2e35eaa89dfa1cb93a3eecd997114816793f130046017f8bfcb195
 
-      - name: Deploy to NetSuite
-        run: suitecloud project:deploy
+    # - run: suitecloud project:deploy
+    #   shell: bash
+    - run:  if [ ${{ inputs.action}} == 'deploy' ]; then suitecloud project:deploy; echo deployed;  fi
+      shell: bash
