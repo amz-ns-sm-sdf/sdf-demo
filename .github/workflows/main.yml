@@ -22,7 +22,7 @@ jobs:
           node-version: '14'
 
       - name: Install SuiteCloud CLI
-        run: npm install -g @oracle/suitecloud-cli
+        run: npm install -g --acceptSuiteCloudSDKLicense @oracle/suitecloud-cli
 
       - name: Authenticate with NetSuite
         run: suitecloud account:login --account ${{ secrets.TD2938052 }} --authid ${{ secrets.mfgfund-sdf }}
