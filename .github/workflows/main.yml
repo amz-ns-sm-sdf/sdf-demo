@@ -19,8 +19,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
-          jdk-version : '11.0.24'
+          node-version: '16'
+          
 
       - name: Install SuiteCloud CLI
         run: npm install -g --acceptSuiteCloudSDKLicense @oracle/suitecloud-cli
