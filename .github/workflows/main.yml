@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Deploy to NetSuite
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +21,18 @@ jobs:
         with:
           node-version: '16'
 
-      
+      - name: Install Oracle JDK 17
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.deb
+          sudo apt install -y ./jdk-17_linux-x64_bin.deb
+          rm ./jdk-17_linux-x64_bin.deb
+          sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk-17/bin/java 1
+          sudo update-alternatives --set java /usr/lib/jvm/jdk-17/bin/java
+
+      - name: Set JAVA_HOME
+        run: echo "JAVA_HOME=/usr/lib/jvm/jdk-17" >> $GITHUB_ENV
 
       - name: Verify Java Version
         run: java -version
@@ -36,9 +47,6 @@ jobs:
           NETSUITE_TOKEN_ID: ${{ secrets.NETSUITE_TOKEN_ID }}
           NETSUITE_TOKEN_SECRET: ${{ secrets.NETSUITE_TOKEN_SECRET }}
         run: suitecloud account:savetoken --account $NETSUITE_ACCOUNT_ID --authid $NETSUITE_AUTH_ID --tokenid $NETSUITE_TOKEN_ID --tokensecret $NETSUITE_TOKEN_SECRET
-
-      - name: Debug - SuiteCloud CLI version
-        run: suitecloud --version
 
       - name: Deploy to NetSuite
         run: suitecloud project:deploy
