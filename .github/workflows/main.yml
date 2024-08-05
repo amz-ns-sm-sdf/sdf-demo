@@ -28,14 +28,9 @@ jobs:
           wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.deb
           sudo apt install -y ./jdk-17_linux-x64_bin.deb
           rm ./jdk-17_linux-x64_bin.deb
-          sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk-17/bin/java 1
-          sudo update-alternatives --set java /usr/lib/jvm/jdk-17/bin/java
+          
 
-      - name: Set JAVA_HOME
-        run: echo "JAVA_HOME=/usr/lib/jvm/jdk-17" >> $GITHUB_ENV
-
-      - name: Verify Java Version
-        run: java -version
+      
 
       - name: Install SuiteCloud CLI
         run: npm install -g --acceptSuiteCloudSDKLicense @oracle/suitecloud-cli
