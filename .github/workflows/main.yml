@@ -25,7 +25,7 @@ jobs:
         run: npm install -g --acceptSuiteCloudSDKLicense @oracle/suitecloud-cli
 
       - name: Authenticate with NetSuite
-        run: suitecloud account:login --account ${{ secrets.TD2938052 }} --authid ${{ secrets.mfgfund-sdf }}
+        run: suitecloud account:login --account ${{ secrets.TD2938052 }} --authid ${{ secrets.mfgfund-sdf }} --tokenid ${{secrets.af36a4f664ea2c705e5abf97497d1c29fb482a2b3242aafb7c32e3bd7d1ff607}} --tokensecret ${{secrets.bc977fd8bf2e35eaa89dfa1cb93a3eecd997114816793f130046017f8bfcb195}}
 
       - name: Deploy to NetSuite
         run: suitecloud project:deploy
