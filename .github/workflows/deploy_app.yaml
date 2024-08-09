@@ -15,8 +15,7 @@ jobs:
           NETSUITE_TOKEN_ID: ${{ secrets.NETSUITE_TOKEN_ID }}
           NETSUITE_TOKEN_SECRET: ${{ secrets.NETSUITE_TOKEN_SECRET }}
           NETSUITE_AUTH_ID: ${{ secrets.NETSUITE_AUTH_ID }}
-      - name: Deploy project to ${{ secrets.NETSUITE_ACCOUNT_ID }}
-        run: npm run deploy
+      
       - name: Validate SuiteApp
         run: suitecloud project:validate
   
