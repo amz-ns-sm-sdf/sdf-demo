@@ -10,6 +10,9 @@ inputs:
   NETSUITE_TOKEN_SECRET:
     description: 'The Token Secret for authenticating to the target NetSuite environment'
     required: true
+  NETSUITE_AUTH_ID:
+    description: 'The Token Secret for authenticating to the target NetSuite environment'
+    required: true  
 runs:
   using: 'composite'
   steps:
