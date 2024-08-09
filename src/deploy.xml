@@ -3,9 +3,9 @@
         <path>~/FileCabinet/SuiteApps/com.netsuite.testsdf/*</path>
     </files>
     <objects>
-        <path>~/com.netsuite.testsdf/src/Objects/*</path>
+        <path>~/Objects/*</path>
     </objects>
     <translationimports>
-        <path>~/com.netsuite.testsdf/src/Translations/*</path>
+        <path>~/Translations/*</path>
     </translationimports>
 </deploy>
