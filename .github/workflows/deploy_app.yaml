@@ -11,8 +11,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/sdf-install
         with:
-          ns-account-id: ${{ secrets.NETSUITE_ACCOUNT_ID }}
-          ns-token-id: ${{ secrets.NETSUITE_TOKEN_ID }}
-          ns-token-secret: ${{ secrets.NETSUITE_TOKEN_SECRET }}
+          NETSUITE_ACCOUNT_ID: ${{ secrets.NETSUITE_ACCOUNT_ID }}
+          NETSUITE_TOKEN_ID: ${{ secrets.NETSUITE_TOKEN_ID }}
+          NETSUITE_TOKEN_SECRET: ${{ secrets.NETSUITE_TOKEN_SECRET }}
+          NETSUITE_AUTH_ID: ${{ secrets.NETSUITE_AUTH_ID }}
       - name: Deploy project to ${{ secrets.NETSUITE_ACCOUNT_ID }}
         run: npm run deploy
