@@ -1,4 +1,4 @@
 module.exports = {
-	defaultProjectFolder: "src",
+	defaultProjectFolder: "com.netsuite.testsdf/src",
 	commands: {}
 };
