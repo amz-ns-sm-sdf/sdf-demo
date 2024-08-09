@@ -27,9 +27,8 @@ runs:
         distribution: 'oracle'
     - name: Install package
       run: npm install -g --acceptSuiteCloudSDKLicense @oracle/suitecloud-cli
-      shell: bash
-    - name: Authenticate project against ${{ inputs.NETSUITE_ACCOUNT_ID }}
-      run: echo "api calling......" 
+      shell: bash    
+    - name: calling api
       run: suitecloud
       run: suitecloud account:savetoken --account ${{ inputs.NETSUITE_ACCOUNT_ID }} --authid ${{ inputs.NETSUITE_AUTH_ID }} --tokenid ${{ inputs.NETSUITE_TOKEN_ID }} --tokensecret ${{ inputs.NETSUITE_TOKEN_SECRET }}
       shell: bash
