@@ -1,1 +1,1 @@
-suitecloud account:savetoken --account TD2938052 --authid mfgfund-prod --tokenid 793cce8ff9864dcf81bf79d521cb47101845b5f8aa721c0241e474f7fc28995a --tokensecret 94afd85183a25e5601bbb8d95cded0baead331efc4747ab184565c3769bfe9bc
+suitecloud account:savetoken --account TD2938052 --authid td2938052 --tokenid 793cce8ff9864dcf81bf79d521cb47101845b5f8aa721c0241e474f7fc28995a --tokensecret 94afd85183a25e5601bbb8d95cded0baead331efc4747ab184565c3769bfe9bc
