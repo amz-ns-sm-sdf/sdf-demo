@@ -1,47 +1,19 @@
-name: Deploy to NetSuite
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
 jobs:
-  deploy:
+  Explore-GitHub-Actions:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-
-      - name: Install Oracle JDK 17
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget
-          wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.deb
-          sudo apt install -y ./jdk-17_linux-x64_bin.deb
-          rm ./jdk-17_linux-x64_bin.deb
-          
-
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is account ${{ secrets.NETSUITE_ACCOUNT_ID }} authid ${{ secrets.NETSUITE_AUTH_ID }} tokenid ${{ secrets.NETSUITE_TOKEN_ID }} tokensecret ${{ secrets.NETSUITE_TOKEN_SECRET }}."
       
-
-      - name: Install SuiteCloud CLI
-        run: npm install -g --acceptSuiteCloudSDKLicense @oracle/suitecloud-cli
-
-      - name: Authenticate with NetSuite
-        env:
-          NETSUITE_ACCOUNT_ID: ${{ secrets.NETSUITE_ACCOUNT_ID }}
-          NETSUITE_AUTH_ID: ${{ secrets.NETSUITE_AUTH_ID }}
-          NETSUITE_TOKEN_ID: ${{ secrets.NETSUITE_TOKEN_ID }}
-          NETSUITE_TOKEN_SECRET: ${{ secrets.NETSUITE_TOKEN_SECRET }}
-        run: suitecloud account:savetoken --account $NETSUITE_ACCOUNT_ID --authid $NETSUITE_AUTH_ID --tokenid $NETSUITE_TOKEN_ID --tokensecret $NETSUITE_TOKEN_SECRET
-
-      - name: Deploy to NetSuite
-        run: suitecloud project:deploy

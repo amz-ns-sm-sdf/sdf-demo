@@ -1,0 +1,33 @@
+name: 'sdf-install'
+description: 'Run common installation steps for a NetSuite SDF Project'
+inputs:
+  NETSUITE_ACCOUNT_ID:
+    description: 'The Account ID of the target NetSuite environment'
+    required: true
+  NETSUITE_TOKEN_ID:
+    description: 'The Token ID for authenticating to the target NetSuite environment'
+    required: true
+  NETSUITE_TOKEN_SECRET:
+    description: 'The Token Secret for authenticating to the target NetSuite environment'
+    required: true
+  NETSUITE_AUTH_ID:
+    description: 'The Token Secret for authenticating to the target NetSuite environment'
+    required: true  
+runs:
+  using: 'composite'
+  steps:
+    - name: Install node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'lts/*'
+    - name: Install JDK 
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'oracle'
+    - name: Install package
+      run: npm install -g --acceptSuiteCloudSDKLicense @oracle/suitecloud-cli
+      shell: bash    
+    - name: calling api      
+      run: suitecloud account:savetoken --account ${{ inputs.NETSUITE_ACCOUNT_ID }} --authid ${{ inputs.NETSUITE_AUTH_ID }} --tokenid ${{ inputs.NETSUITE_TOKEN_ID }} --tokensecret ${{ inputs.NETSUITE_TOKEN_SECRET }}
+      shell: bash

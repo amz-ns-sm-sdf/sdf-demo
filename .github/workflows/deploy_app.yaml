@@ -1,0 +1,23 @@
+name: SDF Validation
+run-name: validate
+on:
+  push:
+    branches: [main]
+jobs:
+  sdf-deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name == 'main' && 'production' || 'sandbox' }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/sdf-install
+        with:
+          NETSUITE_ACCOUNT_ID: ${{ secrets.NETSUITE_ACCOUNT_ID }}
+          NETSUITE_TOKEN_ID: ${{ secrets.NETSUITE_TOKEN_ID }}
+          NETSUITE_TOKEN_SECRET: ${{ secrets.NETSUITE_TOKEN_SECRET }}
+          NETSUITE_AUTH_ID: ${{ secrets.NETSUITE_AUTH_ID }}
+      
+      - name: Validate SuiteApp
+        run: suitecloud project:validate
+  
+      - name: Deploy SuiteApp
+        run: suitecloud project:deploy  
