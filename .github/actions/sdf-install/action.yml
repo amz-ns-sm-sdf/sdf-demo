@@ -4,10 +4,10 @@ inputs:
   NETSUITE_ACCOUNT_ID:
     description: 'The Account ID of the target NetSuite environment'
     required: true
-  ns-token-id:
+  NETSUITE_TOKEN_ID:
     description: 'The Token ID for authenticating to the target NetSuite environment'
     required: true
-  ns-token-secret:
+  NETSUITE_TOKEN_SECRET:
     description: 'The Token Secret for authenticating to the target NetSuite environment'
     required: true
 runs:
