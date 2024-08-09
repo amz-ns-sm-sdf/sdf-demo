@@ -20,7 +20,7 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version: 'lts/*'
-    - name: Install JDK
+    - name: Install JDK 
       uses: actions/setup-java@v3
       with:
         java-version: '17'
