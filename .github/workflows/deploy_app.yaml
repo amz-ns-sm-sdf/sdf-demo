@@ -17,3 +17,8 @@ jobs:
           NETSUITE_AUTH_ID: ${{ secrets.NETSUITE_AUTH_ID }}
       - name: Deploy project to ${{ secrets.NETSUITE_ACCOUNT_ID }}
         run: npm run deploy
+      - name: Validate SuiteApp
+        run: suitecloud project:validate
+  
+      - name: Deploy SuiteApp
+        run: suitecloud project:deploy  
